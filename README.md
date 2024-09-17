@@ -1,9 +1,10 @@
-# ICPC Problem Solving Repository
+# Problem Solving Repository
 
-Welcome to my ICPC problem-solving repository! Here, you'll find solutions to various problems that I've tackled while preparing for the International Collegiate Programming Contest (ICPC). some solutions are accompanied by detailed explanations and the approach used to solve these challenges.
+Welcome to my problem-solving repository! Here, you'll find solutions to various problems that I've tackled while preparing for the Egyptian Collegiate Programming Contest (ECPC). solutions are categorized according to the approach used to solve these challenges.
 
 - **Problem Solutions:** problems solutions are organized into folders, named according to the topic of the problem.
-- **Languages:** Solutions are implemented in C++.
+- **Languages:** solutions are implemented in C++.
+- **Links:** each solution contains the link of the problem corresponding to it.
 
 ## Why This Repository?
 
@@ -15,10 +16,6 @@ Preparing for the ICPC involves rigorous problem-solving practice. This reposito
 - Clone the repository: `git clone https://github.com/your-username/ICPC-Problem-Solving.git`
 - Explore different problem sets and their solutions.
 - Contribute by adding your solutions or improving existing ones through pull requests.
-
-## Feedback
-
-If you find any issues with the solutions or have suggestions for improvements, feel free to open an issue or reach out to me. Happy coding!
 
 ---
 
