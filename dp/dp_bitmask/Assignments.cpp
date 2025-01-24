@@ -1,4 +1,4 @@
-/* problem link: https://www.spoj.com/problems/PERMUT1/en/
+/* problem link: https://www.spoj.com/problems/ASSIGN/en/
  * solution by: Raghad Islam
  * date: 21-1-2025 
  */
@@ -28,8 +28,7 @@ void fastIO(void)
 }
 
 typedef long long ll;
-//#define int ll
-#define int unsigned int
+#define int ll
 #define tests int t; cin >> t; int o = -1; while(++o < t)
 int sub(int a, int b, int mod){
     return ((a%mod) - (b%mod) + mod) % mod;
@@ -39,39 +38,41 @@ int add(int a, int b, int mod){
     return ((a%mod) + (b%mod)) % mod;
 }
 int tc = 1;
-const int N = 12;
-int dp[N+4][(1<<N) + 4][100];
+const int N = 20;
+int dp[N+4][(1<<N) + 4];
+int vis[N+4][(1<<N) + 4];
 vector<vector<int>> v(25, vector<int>(25));
-int n,k ;
+int n;
 
-int fun(int idx, int mask, int sum) {
+int fun(int student, int mask) {
 
-    if(sum > k) return 0;
-    if(idx == n && sum == k) return 1;
-    if(idx == n) return 0;
-    int&ret = dp[idx][mask][sum];
+    if(student == n && __builtin_popcount(mask) == n) return 1;
+    if(student == n) return 0;
+    int&ret = dp[student][mask];
     if(ret!=-1) return ret;
     ret = 0;
 
     //ret = -1e18;
-    for (short pos = n-1; pos >=0 ; --pos) {
-        if((mask & (1 << pos)) == 0)
+    for (int subject = 0; subject < n; ++subject) {
+        if((v[student][subject] == 1) && (mask & (1<<subject))==0)
         {
-            int x = (pos+1);
-            int y = (1<<x) - 1;
-            int z = ~y;
-            z = z & mask;
-            int ans = __builtin_popcount(z);
-            ret += fun(idx + 1, (mask | (1 << pos)), sum + ans);
+            ret += fun(student + 1, (mask | (1<<subject)));
         }
     }
     return ret;
 }
 
 void solve() {
-    cin>>n>>k;
     ::memset(dp,-1,sizeof dp);
-    cout<<fun(0,0,0)<<'\n';
+
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> v[i][j];
+        }
+    }
+    cout<<fun(0,0)<<'\n';
+    tc++;
 }
 
 signed main(){
