@@ -133,11 +133,11 @@ struct SegTree {
 
 void solve() {
     int n; cin >> n;
-    SegTree st(1e5 + 5);
+    SegTree st(n+1);
     // vector<int> v(n);
     for (int i = 0; i < n; i++) {
         int x; cin >> x;
-        cout << st.get(x + 1, 1e5 + 4) << ' ';
+        cout << st.get(x + 1, n+1) << ' ';
         st.set(x, 1);
     }
 }
