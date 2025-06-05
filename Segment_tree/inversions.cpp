@@ -22,20 +22,40 @@ void fastIO(void) {
 typedef long long ll;
 #define int ll
 
+// ordered set
+// To use it we must comment the #define int ll
+//
+// #include <ext/pb_ds/assoc_container.hpp>
+// #include <ext/pb_ds/tree_policy.hpp>
+// using namespace __gnu_pbds;
+//
+// #define ordered_set tree<int, null_type,less<int>, rb_tree_tag,tree_order_statistics_node_update>
+//  ordered_set o_set;
+//  o_set.insert(num);
+// Finding the count of elements less than or equal to num
+//  o_set.order_of_key(num)
+//  Deleting 2 from the set if it exists
+// if (o_set.find(2) != o_set.end())
+//     o_set.erase(o_set.find(2));
+// Finding the second smallest element
+// in the set using * because
+//  find_by_order returns an iterator
+// *(o_set.find_by_order(1))
+
 struct Node {
-    int numOfOnes;
+    int value;
 
     // neutral
     Node() {
-        numOfOnes = 0;
+        value = 0;
     }
 
     explicit Node(int val) {
-        numOfOnes = val;
+        value = val;
     }
 
     void change(int val) {
-        numOfOnes = val;
+        value += val; // change according to the problem
     }
 };
 
@@ -49,13 +69,14 @@ struct SegTree {
         segData.assign(treeSize * 2, Node());
     }
 
-    Node merge(Node &lf, Node &ri) {
+    // change this function according to the problem
+    Node merge(Node & lf, Node & ri) {
         Node ans = Node();
-        ans.numOfOnes = lf.numOfOnes + ri.numOfOnes;
+        ans.value = lf.value + ri.value;
         return ans;
     }
 
-    void init(vector<int> &v, int ni, int lx, int rx) {
+    void init(vector<int> & v, int ni, int lx, int rx) {
         if (lx == rx - 1) {
             if (lx < v.size())
                 segData[ni] = Node(v[lx]);
@@ -64,14 +85,16 @@ struct SegTree {
         int mid = (lx + rx) / 2;
         init(v, ni * 2 + 1, lx, mid);
         init(v, ni * 2 + 2, mid, rx);
-        segData[ni] = merge(segData[2 * ni + 1], segData[2 * ni + 2]);
+        segData[ni] = merge(segData[2 * ni + 1],segData[2 * ni + 2]);
     }
 
-    void init(vector<int> &arr) {
-        init(arr, 0, 0, treeSize);
+    void init(vector<int> & arr) {
+        init(arr,0,0,treeSize);
     }
 
-    void set(int idx, int val, int ni, int lx, int rx) {
+    void set(int idx, int val, int ni, int lx, int rx) { // 0-indexed
+
+        // leaf
         if (lx == rx - 1) {
             segData[ni].change(val);
             return;
@@ -80,67 +103,50 @@ struct SegTree {
         int mid = (lx + rx) / 2;
 
         if (idx < mid) {
-            set(idx, val, ni * 2 + 1, lx, mid);
+            set(idx, val, ni*2 + 1, lx, mid);
+
         } else {
-            set(idx, val, ni * 2 + 2, mid, rx);
+            set(idx, val, ni*2 + 2, mid, rx);
         }
 
         segData[ni] = merge(segData[ni * 2 + 1], segData[ni * 2 + 2]);
     }
 
-    void set(int idx, int val) {
+    void set (int idx, int val) {
         set(idx, val, 0, 0, treeSize);
     }
 
-    int get(int k, int l, int r, int ni, int lx, int rx) { // 0-indexed, r not included
-        if (lx == rx - 1) {
-            return lx;
-        }
+    Node get(int l, int r, int ni, int lx, int rx) { // 0-indexed, r not included
+        if (l >= rx || r <= lx) return Node();
+        if (lx >= l && rx <= r) return segData[ni];
+
         int mid = (lx + rx) / 2;
-        if (segData[2 * ni + 1].numOfOnes > k) {
-            return get(k,l,r, 2 * ni + 1, lx, mid);
-        } else {
-            return get(k - segData[2 * ni + 1].numOfOnes,l,r, 2 * ni + 2, mid, rx);
-        }
+        Node lf = get(l, r, ni * 2 + 1, lx, mid);
+        Node ri = get(l, r, ni * 2 + 2, mid, rx);
+        return merge(lf, ri);
     }
 
-    int get(int k, int l, int r) {
-        return get(k, l, r, 0, 0, treeSize);
+    int get(int l, int r) {
+        return get(l, r, 0, 0, treeSize).value;
     }
-
 };
 
 void solve() {
-    int n, m; cin >> n >> m;
-    vector<int> arr(n);
+    int n; cin >> n;
+    SegTree st(1e5 + 5);
+    // vector<int> v(n);
     for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-    SegTree st(n);
-    st.init(arr);
-    while (m--) {
-        int op; cin >> op;
-        if (op == 1) {
-            int idx; cin >> idx;
-            arr[idx] = 1 - arr[idx];
-            st.set(idx, arr[idx]);
-        }
-        else if (op == 2) {
-            int k; cin >> k;
-            cout << st.get(k,0,n) << '\n';
-        }
+        int x; cin >> x;
+        cout << st.get(x + 1, 1e5 + 4) << ' ';
+        st.set(x, 1);
     }
 }
 
-signed main() {
+signed main(){
     fileIO();
     fastIO();
-    int t = 1;
-  //  cin >> t;
-     while(t--)
-    solve();
-    // }
+    int t = 1;// cin >> t;
+ //   while(t--)
+        solve();
     return 0;
 }
-
-
