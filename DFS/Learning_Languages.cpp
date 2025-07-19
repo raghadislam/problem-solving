@@ -41,7 +41,6 @@ void dfs(int u) {
 
 void solve() {
     cin >> n >> m;
-    init();
 
     for (int i = 1; i <= n; i++) {
         int k; cin >> k;
