@@ -13,7 +13,7 @@ Preparing for the ICPC involves rigorous problem-solving practice. This reposito
 
 ## How to Use
 
-- Clone the repository: `git clone https://github.com/your-username/ICPC-Problem-Solving.git`
+- Clone the repository: `git clone https://github.com/raghadislam/ICPC-Problem-Solving.git`
 - Explore different problem sets and their solutions.
 - Contribute by adding your solutions or improving existing ones through pull requests.
 
